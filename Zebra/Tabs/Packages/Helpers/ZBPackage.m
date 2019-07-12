@@ -226,13 +226,14 @@
         const char *longDescriptionChars =  (const char *)sqlite3_column_text(statement, ZBPackageColumnLongDescription);
         const char *sectionChars =          (const char *)sqlite3_column_text(statement, ZBPackageColumnSection);
         const char *depictionChars =        (const char *)sqlite3_column_text(statement, ZBPackageColumnDepiction);
+        const char *nativeDepictionChars =  (const char *)sqlite3_column_text(statement, ZBPackageColumnNativeDepictionURL);
         const char *tagChars =              (const char *)sqlite3_column_text(statement, ZBPackageColumnTag);
         const char *authorChars =           (const char *)sqlite3_column_text(statement, ZBPackageColumnAuthor);
         const char *dependsChars =          (const char *)sqlite3_column_text(statement, ZBPackageColumnDepends);
-        const char *conflictsChars =        (const char *)sqlite3_column_text(statement, ZBPackageColumnConflicts);
+        const char *conflictsChars =         (const char *)sqlite3_column_text(statement, ZBPackageColumnConflicts);
         const char *providesChars =         (const char *)sqlite3_column_text(statement, ZBPackageColumnProvides);
         const char *replacesChars =         (const char *)sqlite3_column_text(statement, ZBPackageColumnReplaces);
-        const char *filenameChars =         (const char *)sqlite3_column_text(statement, ZBPackageColumnFilename);
+        const char *filenameChars =          (const char *)sqlite3_column_text(statement, ZBPackageColumnFilename);
         const char *iconChars =             (const char *)sqlite3_column_text(statement, ZBPackageColumnIconURL);
         sqlite3_int64 lastSeen =            sqlite3_column_int64(statement, ZBPackageColumnLastSeen);
         
@@ -243,6 +244,7 @@
         [self setLongDescription:longDescriptionChars != 0 ? [NSString stringWithUTF8String:longDescriptionChars] : NULL];
         [self setSection:sectionChars != 0 ? [NSString stringWithUTF8String:sectionChars] : NULL];
         [self setDepictionURL:depictionChars != 0 ? [NSURL URLWithString:[NSString stringWithUTF8String:depictionChars]] : NULL];
+        [self setNativeDepictionURL:nativeDepictionChars != 0 ? [NSURL URLWithString:[NSString stringWithUTF8String:nativeDepictionChars]] : NULL];
         [self setAuthor:authorChars != 0 ? [NSString stringWithUTF8String:authorChars] : NULL];
         [self setFilename:filenameChars != 0 ? [NSString stringWithUTF8String:filenameChars] : NULL];
         [self setIconPath:iconChars != 0 ? [NSString stringWithUTF8String:iconChars] : NULL];

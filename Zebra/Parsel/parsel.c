@@ -86,10 +86,10 @@ char *reposSchema() {
 const char *repoInsertQuery = "INSERT INTO REPOS(ORIGIN, DESCRIPTION, BASEFILENAME, BASEURL, SECURE, REPOID, DEF, SUITE, COMPONENTS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 char *packagesSchema() {
-    return "PACKAGES(PACKAGE STRING, NAME STRING, VERSION VARCHAR(16), SHORTDESCRIPTION STRING, LONGDESCRIPTION STRING, SECTION STRING, DEPICTION STRING, TAG STRING, AUTHOR STRING, DEPENDS STRING, CONFLICTS STRING, PROVIDES STRING, REPLACES STRING, FILENAME STRING, ICONURL STRING, REPOID INTEGER, LASTSEEN TIMESTAMP)";
+    return "PACKAGES(PACKAGE STRING, NAME STRING, VERSION VARCHAR(16), SHORTDESCRIPTION STRING, LONGDESCRIPTION STRING, SECTION STRING, DEPICTION STRING, TAG STRING, AUTHOR STRING, DEPENDS STRING, CONFLICTS STRING, PROVIDES STRING, REPLACES STRING, FILENAME STRING, ICONURL STRING, NATIVEDEPICTION STRING, REPOID INTEGER, LASTSEEN TIMESTAMP)";
 }
 
-const char *packageInsertQuery = "INSERT INTO PACKAGES(PACKAGE, NAME, VERSION, SHORTDESCRIPTION, LONGDESCRIPTION, SECTION, DEPICTION, TAG, AUTHOR, DEPENDS, CONFLICTS, PROVIDES, REPLACES, FILENAME, ICONURL, REPOID, LASTSEEN) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+const char *packageInsertQuery = "INSERT INTO PACKAGES(PACKAGE, NAME, VERSION, SHORTDESCRIPTION, LONGDESCRIPTION, SECTION, DEPICTION, TAG, AUTHOR, DEPENDS, CONFLICTS, PROVIDES, REPLACES, FILENAME, ICONURL, NATIVEDEPICTION, REPOID, LASTSEEN) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
 char *updatesSchema() {
     return "UPDATES(PACKAGE STRING PRIMARY KEY, VERSION STRING NOT NULL, IGNORE INTEGER DEFAULT 0)";
@@ -376,6 +376,13 @@ bool bindPackage(dict **package_, int repoID, int safeID, char *longDescription,
             sqlite3_bind_text(insertStatement, 1 + ZBPackageColumnReplaces, dict_get(package, "Replaces"), -1, SQLITE_TRANSIENT);
             sqlite3_bind_text(insertStatement, 1 + ZBPackageColumnFilename, dict_get(package, "Filename"), -1, SQLITE_TRANSIENT);
             sqlite3_bind_text(insertStatement, 1 + ZBPackageColumnIconURL, dict_get(package, "Icon"), -1, SQLITE_TRANSIENT);
+            if (dict_get(package, "SileoDepiction")) {
+                sqlite3_bind_text(insertStatement, 1 + ZBPackageColumnNativeDepictionURL, dict_get(package, "SileoDepiction"), -1, SQLITE_TRANSIENT);
+            } else if (dict_get(package, "Sileodepiction")) {
+                sqlite3_bind_text(insertStatement, 1 + ZBPackageColumnNativeDepictionURL, dict_get(package, "Sileodepiction"), -1, SQLITE_TRANSIENT);
+            } else {
+                sqlite3_bind_text(insertStatement, 1 + ZBPackageColumnNativeDepictionURL, dict_get(package, "NativeDepiction"), -1, SQLITE_TRANSIENT);
+            }
             sqlite3_bind_int(insertStatement, 1 + ZBPackageColumnRepoID, repoID);
             sqlite3_int64 previousTimestamp = import ? -1 : getCurrentPackageTimestamp(database, packageIdentifier, dict_get(package, "Version"), repoID);
             sqlite3_int64 newTimestamp = 0;
