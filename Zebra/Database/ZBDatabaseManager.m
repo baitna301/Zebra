@@ -119,20 +119,23 @@
 }
 
 - (void)bulkDatabaseStartedUpdate {
-    for (id <ZBDatabaseDelegate> delegate in self.databaseDelegates) {
+    for (int i = 0; i < self.databaseDelegates.count; ++i) {
+        id <ZBDatabaseDelegate> delegate = self.databaseDelegates[i];
         [delegate databaseStartedUpdate];
     }
 }
 
 - (void)bulkDatabaseCompletedUpdate:(int)updates {
     databaseBeingUpdated = NO;
-    for (id <ZBDatabaseDelegate> delegate in self.databaseDelegates) {
+    for (int i = 0; i < self.databaseDelegates.count; ++i) {
+        id <ZBDatabaseDelegate> delegate = self.databaseDelegates[i];
         [delegate databaseCompletedUpdate:updates];
     }
 }
 
 - (void)bulkPostStatusUpdate:(NSString *)status atLevel:(ZBLogLevel)level {
-    for (id <ZBDatabaseDelegate> delegate in self.databaseDelegates) {
+    for (int i = 0; i < self.databaseDelegates.count; ++i) {
+        id <ZBDatabaseDelegate> delegate = self.databaseDelegates[i];
         if ([delegate respondsToSelector:@selector(postStatusUpdate:atLevel:)]) {
             [delegate postStatusUpdate:status atLevel:level];
         }
@@ -140,7 +143,8 @@
 }
 
 - (void)bulkSetRepo:(NSString *)bfn busy:(BOOL)busy {
-    for (id <ZBDatabaseDelegate> delegate in self.databaseDelegates) {
+    for (int i = 0; i < self.databaseDelegates.count; ++i) {
+        id <ZBDatabaseDelegate> delegate = self.databaseDelegates[i];
         if ([delegate respondsToSelector:@selector(setRepo:busy:)]) {
             [delegate setRepo:bfn busy:busy];
         }
@@ -764,11 +768,11 @@
         NSMutableArray *searchResults = [NSMutableArray new];
         NSString *query;
         
-        if (results) {
+        if (results && results != -1) {
             query = [NSString stringWithFormat:@"SELECT * FROM PACKAGES WHERE NAME LIKE \'%%%@\%%\' AND REPOID > -1 ORDER BY (CASE WHEN NAME = \'%@\' THEN 1 WHEN NAME LIKE \'%@%%\' THEN 2 ELSE 3 END) COLLATE NOCASE LIMIT %d", name, name, name, results];
         }
         else {
-            query = [NSString stringWithFormat:@"SELECT * FROM PACKAGES WHERE NAME LIKE \'%%%@\%%\' AND REPOID > -1 ORDER BY (CASE WHEN NAME = \'%@\' THEN 1 WHEN NAME LIKE \'%@%%\' THEN 2 ELSE 3 END) COLLATE NOCASE", name, name, name];
+            query = [NSString stringWithFormat:@"SELECT * FROM PACKAGES WHERE (NAME LIKE \'%%%@\%%\') OR (SHORTDESCRIPTION LIKE \'%%%@\%%\') AND REPOID > -1 ORDER BY (CASE WHEN NAME = \'%@\' THEN 1 WHEN NAME LIKE \'%@%%\' THEN 2 ELSE 3 END) COLLATE NOCASE", name, name, name, name];
         }
         
         sqlite3_stmt *statement;

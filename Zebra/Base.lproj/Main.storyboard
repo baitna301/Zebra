@@ -179,11 +179,30 @@
                         <outlet property="packageName" destination="bLd-KE-N3G" id="JjK-cT-0Iz"/>
                         <outlet property="tableView" destination="Jiz-bw-rBw" id="Pv1-Pz-EyS"/>
                         <segue destination="bfp-la-uN6" kind="show" identifier="seguePackageDepictionToMorePackages" id="cOE-ig-TNf"/>
+                        <segue destination="S2S-wW-UmR" kind="show" identifier="packageDepictionToInstalledFiles" id="7iP-kk-tZx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7jM-DB-51u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5285.6000000000004" y="443.92803598200902"/>
+        </scene>
+        <!--Installed Files Table View Controller-->
+        <scene sceneID="yuu-9C-7ih">
+            <objects>
+                <tableViewController storyboardIdentifier="installedFilesController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="S2S-wW-UmR" customClass="ZBInstalledFilesTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="sMh-kh-jCb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <connections>
+                            <outlet property="dataSource" destination="S2S-wW-UmR" id="cXQ-Td-C0z"/>
+                            <outlet property="delegate" destination="S2S-wW-UmR" id="bQD-xI-R6O"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yvW-WJ-prE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5286" y="1150"/>
         </scene>
         <!--Packages By Author Table View Controller-->
         <scene sceneID="mhY-GL-3gz">
@@ -437,12 +456,12 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="dMk-W6-d0A">
                         <rightBarButtonItems>
-                            <barButtonItem title="DarkMode" image="Dark" landscapeImage="Dark" largeContentSizeImage="Dark" id="2dE-CN-evu">
+                            <barButtonItem image="Dark" landscapeImage="Dark" largeContentSizeImage="Dark" id="2dE-CN-evu">
                                 <connections>
                                     <action selector="toggleDarkMode:" destination="hAX-u8-Al6" id="rwD-0S-3ae"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Settings" image="Settings" landscapeImage="Settings" id="5Na-Lv-DT1">
+                            <barButtonItem image="Settings" landscapeImage="Settings" id="5Na-Lv-DT1">
                                 <connections>
                                     <action selector="settingsButtonTapped:" destination="hAX-u8-Al6" id="u9x-LH-PZ2"/>
                                 </connections>

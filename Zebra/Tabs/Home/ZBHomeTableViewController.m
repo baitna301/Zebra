@@ -251,7 +251,6 @@ typedef enum ZBLinksOrder : NSUInteger {
     header.backgroundColor = [UIColor tableViewBackgroundColor];
     header.textLabel.textColor = [UIColor cellSecondaryTextColor];
     header.tintColor = [UIColor clearColor];
-    //Don't change this to clear color, it breaks the animation.
     [(UIView *)[header valueForKey:@"_backgroundView"] setBackgroundColor:[UIColor tableViewBackgroundColor]];
 }
 
@@ -401,33 +400,24 @@ typedef enum ZBLinksOrder : NSUInteger {
     if (@available(iOS 11.0, *)) {
         settingsController.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     }
-    //[[self navigationController] pushViewController:settingsController animated:true];
     [[self navigationController] presentViewController:settingsController animated:YES completion:nil];
 }
 
 #pragma mark darkmode
 - (IBAction)toggleDarkMode:(id)sender {
-    [self hapticButton];
+    [ZBDevice hapticButton];
     [self darkMode];
 }
 
-- (void)hapticButton {
-    if (@available(iOS 10.0, *)) {
-        UISelectionFeedbackGenerator *feedback = [[UISelectionFeedbackGenerator alloc] init];
-        [feedback prepare];
-        [feedback selectionChanged];
-        feedback = nil;
-    }
-}
-
 - (void)darkMode {
-    [ZBDevice setDarkModeEnabled:([ZBDevice darkModeEnabled]) ? NO : YES];
-    [self.darkModeButton setImage:([ZBDevice darkModeEnabled]) ? [UIImage imageNamed:@"Dark"] : [UIImage imageNamed:@"Light"]];
+    [ZBDevice setDarkModeEnabled:![ZBDevice darkModeEnabled]];
     if ([ZBDevice darkModeEnabled]) {
         [ZBDevice configureDarkMode];
+        [self.darkModeButton setImage:[UIImage imageNamed:@"Dark"]];
         [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     } else {
         [ZBDevice configureLightMode];
+        [self.darkModeButton setImage:[UIImage imageNamed:@"Light"]];
         [self.navigationController.navigationBar setBarStyle:UIBarStyleDefault];
     }
     [ZBDevice refreshViews];

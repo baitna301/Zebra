@@ -47,9 +47,7 @@
     searchController.searchBar.delegate = self;
     searchController.searchBar.tintColor = [UIColor tintColor];
     searchController.searchBar.placeholder = @"Packages";
-    if ([ZBDevice darkModeEnabled]) {
-        searchController.searchBar.keyboardAppearance = UIKeyboardAppearanceDark;
-    }
+    
     self.definesPresentationContext = YES;
     if (@available(iOS 9.1, *)) {
         searchController.obscuresBackgroundDuringPresentation = false;
@@ -119,7 +117,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     if (![searchText isEqualToString:@""]) {
-        results = [databaseManager searchForPackageName:searchText numberOfResults:25];
+        results = [databaseManager searchForPackageName:searchText numberOfResults:60];
     }
     else {
         results = nil;
@@ -230,7 +228,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -288,7 +286,6 @@
     self.tableView.sectionIndexColor = [UIColor tintColor];
     [self.navigationController.navigationBar setTintColor:[UIColor tintColor]];
     searchController.searchBar.tintColor = [UIColor tintColor];
-    searchController.searchBar.keyboardAppearance = [[notif name] isEqualToString:@"darkMode"] ? UIKeyboardAppearanceDark : UIKeyboardAppearanceDefault;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
